@@ -1,6 +1,6 @@
 """Pytests for calc.py"""
 from calc import add
-
+import pytest
 
 def test_add():
     """Test add an empty string | "" == 0"""
@@ -40,8 +40,11 @@ def test_add_user_defined_delimiters_return_sum():
 
 def test_add_with_negative_numbers():
     """Test add with negative number | "-1,2" == "Negatives are not allowed ['-1']" """
-    result = add("-1,2")
-    assert result == "Negatives are not allowed ['-1']"
+    with pytest.raises(Exception) as execinfo:   
+        result = add("-1,2")
+    exception_raised = str(execinfo.value)
+    assert exception_raised == "Negatives are not allowed ['-1']"
+    
 
 
 def test_numbers_bigger_than_1000():
