@@ -8,11 +8,20 @@ def add(numbers: str) -> int:
     if numbers == "":  # If string is empty return 0
         return 0
 
-    # Split delimiters
-    split_delim = re.split(";|,|\*|\n|%", numbers)
+    # Find the delimiter
+    if re.match("\/\/\[(.+)\]", numbers):
+        delimiter = re.match("\/\/\[(.+)\]", numbers)[1]
+        delimiter = re.escape(delimiter)
+        numbers = numbers.strip("//[{}]\n".format(delimiter))
+    elif numbers[0:2] == "//":
+        delimiter = numbers[2]
+        numbers = numbers.strip("//{}\n".format(delimiter))
+    else:
+        delimiter = ","
 
+    numbers = re.split("{}|\n".format(delimiter), numbers)
     # Check for negative numbers
-    negative_numbers = [x for x in split_delim if x.startswith("-") and x[1:].isdigit()]
+    negative_numbers = [x for x in numbers if x.startswith("-") and x[1:].isdigit()]
 
     # Check if a result was given
     if negative_numbers:
@@ -20,5 +29,6 @@ def add(numbers: str) -> int:
         raise Exception("Negatives are not allowed {}".format(negative_numbers))
 
     # Sum up the result given from list comp
-    result = sum([int(x) for x in split_delim if x.isdigit() and int(x) < 1000])
-    return result
+    if len(numbers) == 1:
+        return sum([int(x) for x in numbers[0] if x.isdigit() and int(x) < 1000])
+    return sum([int(x) for x in numbers if x.isdigit() and int(x) < 1000])
