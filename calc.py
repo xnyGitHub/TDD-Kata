@@ -17,7 +17,7 @@ def add(numbers: str) -> int:
     # Check if a result was given
     if negative_numbers:
         # Return no negatives allowed
-        return "Negatives are not allowed {}".format(negative_numbers)
+        raise Exception("Negatives are not allowed {}".format(negative_numbers))
 
     # Sum up the result given from list comp
     result = sum([int(x) for x in split_delim if x.isdigit() and int(x) < 1000])
