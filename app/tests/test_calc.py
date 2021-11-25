@@ -1,5 +1,6 @@
 """Pytests for calc.py"""
-from calc import add
+
+from app.calculator.calc import add
 import pytest
 
 def test_add():
